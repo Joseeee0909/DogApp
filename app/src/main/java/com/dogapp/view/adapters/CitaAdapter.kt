@@ -40,7 +40,12 @@ class CitaAdapter(
             if (!cita.imagenUrl.isNullOrEmpty()) {
                 Glide.with(binding.ivDog.context)
                     .load(cita.imagenUrl)
+                    .placeholder(android.R.drawable.ic_menu_gallery)
+                    .error(android.R.drawable.ic_menu_gallery)
                     .into(binding.ivDog)
+            } else {
+                Glide.with(binding.ivDog.context).clear(binding.ivDog)
+                binding.ivDog.setImageResource(android.R.drawable.ic_menu_gallery)
             }
             binding.executePendingBindings()
         }

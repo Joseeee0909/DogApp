@@ -44,6 +44,10 @@
         android:name="com.dogapp.view.fragments.DetalleCitaFragment"
         android:label="DetalleCitaFragment"
         tools:layout="@layout/fragment_detalle_cita">
+        <argument
+            android:name="citaId"
+            app:argType="integer"
+            android:defaultValue="-1" />
         <action
             android:id="@+id/action_detalleCitaFragment_to_editarCitaFragment"
             app:destination="@id/editarCitaFragment" />
@@ -53,6 +57,11 @@
         android:id="@+id/editarCitaFragment"
         android:name="com.dogapp.view.fragments.EditarCitaFragment"
         android:label="EditarCitaFragment"
-        tools:layout="@layout/fragment_editar_cita" />
+        tools:layout="@layout/fragment_editar_cita">
+        <argument
+            android:name="citaId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
 
 </navigation>

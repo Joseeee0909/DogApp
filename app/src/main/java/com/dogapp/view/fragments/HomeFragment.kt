@@ -51,7 +51,10 @@ class HomeFragment : Fragment() {
 
     private fun setupRecyclerView() {
         citaAdapter = CitaAdapter { cita ->
-            findNavController().navigate(R.id.action_homeFragment_to_detalleCitaFragment)
+            val bundle = Bundle().apply {
+                putInt("citaId", cita.id)
+            }
+            findNavController().navigate(R.id.action_homeFragment_to_detalleCitaFragment, bundle)
         }
         binding.rvCitas.apply {
             layoutManager = LinearLayoutManager(requireContext())
