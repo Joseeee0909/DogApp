@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel encargado de consultar información e imágenes de perros a través de Retrofit.
+ * ViewModel encargado de gestionar los datos obtenidos de la API Dog CEO.
  */
 class DogViewModel : ViewModel() {
 
@@ -31,55 +31,42 @@ class DogViewModel : ViewModel() {
     fun fetchRandomDogImage() {
         _isLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val response = repository.getRandomDogImage()
-                if (response.isSuccessful && response.body() != null) {
-                    _imageUrl.postValue(response.body()?.message)
-                } else {
-                    _errorMessage.postValue("Error al obtener la imagen de perro")
-                }
-            } catch (e: Exception) {
-                _errorMessage.postValue(e.localizedMessage ?: "Error de conexión")
-            } finally {
-                _isLoading.postValue(false)
+            val result = repository.getRandomDogImage()
+            result.onSuccess { url ->
+                _imageUrl.postValue(url)
+                _errorMessage.postValue(null)
+            }.onFailure { exception ->
+                _errorMessage.postValue(exception.localizedMessage ?: "Error de red")
             }
+            _isLoading.postValue(false)
         }
     }
 
     fun fetchDogImageByBreed(breed: String) {
         _isLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val response = repository.getRandomImageByBreed(breed.lowercase())
-                if (response.isSuccessful && response.body() != null) {
-                    _imageUrl.postValue(response.body()?.message)
-                } else {
-                    _errorMessage.postValue("No se encontró imagen para la raza $breed")
-                }
-            } catch (e: Exception) {
-                _errorMessage.postValue(e.localizedMessage ?: "Error de conexión")
-            } finally {
-                _isLoading.postValue(false)
+            val result = repository.getRandomImageByBreed(breed)
+            result.onSuccess { url ->
+                _imageUrl.postValue(url)
+                _errorMessage.postValue(null)
+            }.onFailure { exception ->
+                _errorMessage.postValue(exception.localizedMessage ?: "Raza no encontrada")
             }
+            _isLoading.postValue(false)
         }
     }
 
     fun fetchAllBreeds() {
         _isLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val response = repository.getAllBreeds()
-                if (response.isSuccessful && response.body() != null) {
-                    val breeds = response.body()?.message?.keys?.toList() ?: emptyList()
-                    _breedsList.postValue(breeds)
-                } else {
-                    _errorMessage.postValue("Error al consultar lista de razas")
-                }
-            } catch (e: Exception) {
-                _errorMessage.postValue(e.localizedMessage ?: "Error de conexión")
-            } finally {
-                _isLoading.postValue(false)
+            val result = repository.getBreedsList()
+            result.onSuccess { breeds ->
+                _breedsList.postValue(breeds)
+                _errorMessage.postValue(null)
+            }.onFailure { exception ->
+                _errorMessage.postValue(exception.localizedMessage ?: "Error al cargar razas")
             }
+            _isLoading.postValue(false)
         }
     }
 }

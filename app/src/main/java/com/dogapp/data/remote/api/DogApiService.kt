@@ -7,16 +7,16 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 /**
- * Interfaz de Retrofit para consultar endpoints de Dog CEO API.
+ * Interfaz de Retrofit para consumir la API pública de Dog CEO (https://dog.ceo/dog-api/).
  */
 interface DogApiService {
 
-    @GET("breeds/image/random")
-    suspend fun getRandomDogImage(): Response<DogResponse>
+    @GET("breeds/list/all")
+    suspend fun getAllBreeds(): Response<DogBreedsResponse>
 
     @GET("breed/{breed}/images/random")
     suspend fun getRandomImageByBreed(@Path("breed") breed: String): Response<DogResponse>
 
-    @GET("breeds/list/all")
-    suspend fun getAllBreeds(): Response<DogBreedsResponse>
+    @GET("breeds/image/random")
+    suspend fun getRandomDogImage(): Response<DogResponse>
 }

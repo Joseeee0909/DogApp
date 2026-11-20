@@ -4,10 +4,14 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import com.dogapp.databinding.ViewCurvedToolbarBinding
 
 /**
- * Componente de Toolbar Curva reutilizable para toda la aplicación.
+ * Componente de Toolbar Curva reutilizable con opciones de configuración
+ * de título, color de fondo, botón atrás y controles/acciones secundarios.
  */
 class CurvedToolbar @JvmOverloads constructor(
     context: Context,
@@ -22,6 +26,10 @@ class CurvedToolbar @JvmOverloads constructor(
         binding.tvTitle.text = title
     }
 
+    fun setToolbarBackgroundColor(@ColorRes colorRes: Int) {
+        binding.containerToolbar.setBackgroundColor(ContextCompat.getColor(context, colorRes))
+    }
+
     fun showBackButton(onClick: () -> Unit) {
         binding.btnBack.visibility = VISIBLE
         binding.btnBack.setOnClickListener { onClick() }
@@ -29,5 +37,15 @@ class CurvedToolbar @JvmOverloads constructor(
 
     fun hideBackButton() {
         binding.btnBack.visibility = GONE
+    }
+
+    fun setActionIcon(@DrawableRes iconRes: Int, onClick: () -> Unit) {
+        binding.btnAction.setImageResource(iconRes)
+        binding.btnAction.visibility = VISIBLE
+        binding.btnAction.setOnClickListener { onClick() }
+    }
+
+    fun hideActionIcon() {
+        binding.btnAction.visibility = GONE
     }
 }

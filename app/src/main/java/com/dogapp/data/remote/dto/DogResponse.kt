@@ -3,7 +3,7 @@ package com.dogapp.data.remote.dto
 import com.google.gson.annotations.SerializedName
 
 /**
- * Data Transfer Object para las respuestas de la API Dog CEO.
+ * Data Transfer Object para respuestas individuales de imagen de la API Dog CEO.
  */
 data class DogResponse(
     @SerializedName("message")
@@ -13,7 +13,7 @@ data class DogResponse(
 )
 
 /**
- * DTO para listar razas de perros.
+ * Data Transfer Object para la lista completa de razas de la API Dog CEO.
  */
 data class DogBreedsResponse(
     @SerializedName("message")

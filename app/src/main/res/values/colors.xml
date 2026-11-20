@@ -2,11 +2,21 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="primary">#2E7D32</color>
-    <color name="primary_dark">#1B5E20</color>
-    <color name="accent">#4CAF50</color>
-    <color name="background_light">#F5F5F5</color>
+
+    <!-- Paleta oficial DogApp (FASE 5) -->
+    <color name="pink_primary">#F05861</color>
+    <color name="pink_primary_dark">#D8434C</color>
+    <color name="purple_secondary">#6A1B9A</color>
+    <color name="purple_dark">#4A148C</color>
+    <color name="dark_gray">#212121</color>
+    <color name="medium_gray">#757575</color>
+    <color name="light_gray">#F5F5F5</color>
     <color name="card_background">#FFFFFF</color>
-    <color name="text_primary">#212121</color>
-    <color name="text_secondary">#757575</color>
+
+    <!-- Semánticos para layouts -->
+    <color name="primary">@color/pink_primary</color>
+    <color name="primary_dark">@color/pink_primary_dark</color>
+    <color name="accent">@color/purple_secondary</color>
+    <color name="text_primary">@color/dark_gray</color>
+    <color name="text_secondary">@color/medium_gray</color>
 </resources>
