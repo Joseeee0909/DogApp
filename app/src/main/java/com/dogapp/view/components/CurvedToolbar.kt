@@ -1,6 +1,7 @@
 package com.dogapp.view.components
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
@@ -27,7 +28,8 @@ class CurvedToolbar @JvmOverloads constructor(
     }
 
     fun setToolbarBackgroundColor(@ColorRes colorRes: Int) {
-        binding.containerToolbar.setBackgroundColor(ContextCompat.getColor(context, colorRes))
+        val color = ContextCompat.getColor(context, colorRes)
+        binding.containerToolbar.backgroundTintList = ColorStateList.valueOf(color)
     }
 
     fun showBackButton(onClick: () -> Unit) {

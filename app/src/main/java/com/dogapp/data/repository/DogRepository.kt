@@ -1,6 +1,7 @@
 package com.dogapp.data.repository
 
 import com.dogapp.data.remote.api.DogApiService
+import kotlin.coroutines.cancellation.CancellationException
 
 /**
  * Repositorio que encapsula las llamadas a la API Dog CEO
@@ -21,6 +22,7 @@ class DogRepository(private val dogApiService: DogApiService) {
                 Result.failure(Exception("Error HTTP ${response.code()}: ${response.message()}"))
             }
         } catch (e: Exception) {
+            if (e is CancellationException) throw e
             Result.failure(e)
         }
     }
@@ -43,6 +45,7 @@ class DogRepository(private val dogApiService: DogApiService) {
                 Result.failure(Exception("Raza no encontrada o error HTTP ${response.code()}"))
             }
         } catch (e: Exception) {
+            if (e is CancellationException) throw e
             Result.failure(e)
         }
     }
@@ -64,6 +67,7 @@ class DogRepository(private val dogApiService: DogApiService) {
                 Result.failure(Exception("Error HTTP ${response.code()}: ${response.message()}"))
             }
         } catch (e: Exception) {
+            if (e is CancellationException) throw e
             Result.failure(e)
         }
     }

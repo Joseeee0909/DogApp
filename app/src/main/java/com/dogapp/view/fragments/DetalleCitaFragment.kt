@@ -19,6 +19,7 @@ class DetalleCitaFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val citaViewModel: CitaViewModel by viewModels()
+    private var citaId: Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +32,8 @@ class DetalleCitaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        citaId = arguments?.getInt("citaId", -1) ?: -1
+
         binding.curvedToolbar.setTitle("Detalle de Cita")
         binding.curvedToolbar.showBackButton {
             findNavController().navigateUp()

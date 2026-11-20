@@ -16,7 +16,7 @@
 
     <!-- Estilo para títulos compartidos -->
     <style name="TextStyle.Title" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:textColor">@color/text_primary</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
         <item name="fontFamily">@font/app_font</item>
@@ -24,7 +24,7 @@
 
     <!-- Estilo para subtítulos compartidos -->
     <style name="TextStyle.Subtitle" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">@color/medium_gray</item>
+        <item name="android:textColor">@color/text_secondary</item>
         <item name="android:textSize">14sp</item>
         <item name="fontFamily">@font/app_font</item>
     </style>
