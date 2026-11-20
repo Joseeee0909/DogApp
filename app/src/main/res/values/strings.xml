@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">DogApp</string>
+    <string name="btn_back">Atrás</string>
+    <string name="title_home">Gestión de Citas Veterinaria</string>
+    <string name="title_login">Iniciar Sesión</string>
+    <string name="title_nueva_cita">Nueva Cita</string>
+    <string name="title_detalle_cita">Detalle de Cita</string>
+    <string name="title_editar_cita">Editar Cita</string>
 </resources>
