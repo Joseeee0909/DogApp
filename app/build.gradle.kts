@@ -62,6 +62,12 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
+    // Biometría
+    implementation("androidx.biometric:biometric:1.1.0")
+
+    // Lottie
+    implementation("com.airbnb.android:lottie:6.4.0")
+
     // Glide
     implementation(libs.glide)
 
