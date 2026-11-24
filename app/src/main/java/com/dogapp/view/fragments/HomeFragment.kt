@@ -35,7 +35,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.curvedToolbar.setTitle("Mis Citas")
+        binding.curvedToolbar.configureAsHomeHeader()
+        binding.curvedToolbar.setTitle("Administrador\n   de Citas")
         binding.curvedToolbar.hideBackButton()
 
         setupRecyclerView()

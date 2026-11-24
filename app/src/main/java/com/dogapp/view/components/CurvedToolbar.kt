@@ -50,4 +50,18 @@ class CurvedToolbar @JvmOverloads constructor(
     fun hideActionIcon() {
         binding.btnAction.visibility = GONE
     }
+
+    fun configureAsHomeHeader(title: String = "Administrador\nde Citas") {
+        binding.btnBack.visibility = GONE
+        binding.btnAction.visibility = GONE
+        binding.layoutHomeBrand.visibility = VISIBLE
+
+        binding.containerToolbar.setBackgroundResource(com.dogapp.R.drawable.bg_curved_header_home)
+        val params = binding.containerToolbar.layoutParams
+        params.height = (150 * resources.displayMetrics.density).toInt()
+        binding.containerToolbar.layoutParams = params
+
+        binding.tvTitle.text = title
+        binding.tvTitle.textSize = 23f
+    }
 }
