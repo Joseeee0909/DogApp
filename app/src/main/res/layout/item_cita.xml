@@ -12,80 +12,77 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
-        android:layout_marginVertical="6dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="3dp">
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="8dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="4dp"
+        app:strokeWidth="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp">
+            android:padding="14dp">
 
             <ImageView
                 android:id="@+id/ivDog"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:contentDescription="Imagen Mascota"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:contentDescription="@string/app_name"
                 android:scaleType="centerCrop"
-                android:src="@android:drawable/ic_menu_gallery"
+                android:src="@drawable/perro"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/tvTurno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{`# ` + cita.id}"
+                android:textColor="@color/pink_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="# 1" />
+
+            <TextView
                 android:id="@+id/tvMascota"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@{cita.nombreMascota}"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp"
+                android:textSize="17sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/tvEstado"
+                app:layout_constraintBottom_toTopOf="@id/tvSintoma"
+                app:layout_constraintEnd_toStartOf="@id/tvTurno"
                 app:layout_constraintStart_toEndOf="@id/ivDog"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Firulais" />
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="Cory" />
 
             <TextView
-                android:id="@+id/tvRazaPropietario"
+                android:id="@+id/tvSintoma"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="2dp"
-                android:text="@{cita.raza + ` - ` + cita.propietario}"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{cita.motivo}"
                 android:textColor="@color/text_secondary"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@id/tvEstado"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/ivDog"
                 app:layout_constraintTop_toBottomOf="@id/tvMascota"
-                tools:text="Labrador - Juan Pérez" />
-
-            <TextView
-                android:id="@+id/tvFechaHora"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="2dp"
-                android:text="@{cita.fecha + ` ` + cita.hora}"
-                android:textColor="@color/primary"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/ivDog"
-                app:layout_constraintTop_toBottomOf="@id/tvRazaPropietario"
-                tools:text="2025-03-20 10:00 AM" />
-
-            <TextView
-                android:id="@+id/tvEstado"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{cita.estado}"
-                android:textColor="@color/accent"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Pendiente" />
+                tools:text="Fractura extremidad" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
