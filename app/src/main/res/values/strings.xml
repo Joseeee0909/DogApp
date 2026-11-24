@@ -7,4 +7,14 @@
     <string name="title_nueva_cita">Nueva Cita</string>
     <string name="title_detalle_cita">Detalle de Cita</string>
     <string name="title_editar_cita">Editar Cita</string>
+
+    <string-array name="lista_sintomas">
+        <item>Síntomas</item>
+        <item>Solo duerme</item>
+        <item>No come</item>
+        <item>Fractura extremidad</item>
+        <item>Tiene pulgas</item>
+        <item>Tiene garrapatas</item>
+        <item>Bota demasiado pelo</item>
+    </string-array>
 </resources>

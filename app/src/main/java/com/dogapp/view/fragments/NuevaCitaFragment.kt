@@ -9,23 +9,18 @@ import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.dogapp.data.local.entity.Cita
-import com.dogapp.data.remote.RetrofitClient
-import com.dogapp.data.repository.DogRepository
+import com.dogapp.R
 import com.dogapp.databinding.FragmentNuevaCitaBinding
 import com.dogapp.viewmodel.CitaViewModel
 import com.dogapp.viewmodel.DogViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 /**
  * Fragment para el registro de una nueva cita veterinaria.
+ * Implementa P4-04 (Validación reactiva y estado del botón) y P4-05 (Guardado en Room con imagen dinámica).
  */
 class NuevaCitaFragment : Fragment() {
 
@@ -48,7 +43,7 @@ class NuevaCitaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.curvedToolbar.setTitle("Nueva Cita")
         binding.curvedToolbar.showBackButton {
-            findNavController().navigateUp()
+            findNavController().popBackStack()
         }
 
         setupSpinnersAndAutoComplete()
@@ -58,16 +53,23 @@ class NuevaCitaFragment : Fragment() {
     }
 
     private fun setupSpinnersAndAutoComplete() {
-        // Cargar razas desde la API Dog CEO
+        // Cargar razas desde la API Dog CEO (P4-02)
         dogViewModel.fetchAllBreeds()
+
         dogViewModel.breedsList.observe(viewLifecycleOwner) { breeds ->
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, breeds)
             binding.actvRaza.setAdapter(adapter)
-            binding.actvRaza.threshold = 1
+            binding.actvRaza.threshold = 2
         }
 
-        // Síntomas
-        val sintomasList = listOf("Síntomas", "Solo duerme", "No come", "Fractura extremidad", "Tiene pulgas", "Tiene garrapatas", "Bota demasiado pelo")
+        dogViewModel.errorMessage.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Síntomas (P4-03)
+        val sintomasList = resources.getStringArray(R.array.lista_sintomas).toList()
         val sintomasAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, sintomasList)
         binding.spinnerSintomas.setAdapter(sintomasAdapter)
         binding.spinnerSintomas.setText("Síntomas", false)
@@ -81,6 +83,9 @@ class NuevaCitaFragment : Fragment() {
         }
     }
 
+    /**
+     * P4-04: Validación reactiva en tiempo real para habilitar/deshabilitar el botón Guardar Cita.
+     */
     private fun setupValidation() {
         val watcher = {
             val mascota = binding.etNombreMascota.text.toString().trim()
@@ -88,7 +93,10 @@ class NuevaCitaFragment : Fragment() {
             val propietario = binding.etNombrePropietario.text.toString().trim()
             val telefono = binding.etTelefono.text.toString().trim()
 
-            val isValid = mascota.isNotEmpty() && raza.isNotEmpty() && propietario.isNotEmpty() && telefono.isNotEmpty()
+            // Validación robusta: campos no vacíos y teléfono con dígitos
+            val cleanPhone = telefono.filter { it.isDigit() }
+            val isValid = mascota.isNotEmpty() && raza.isNotEmpty() && propietario.isNotEmpty() && cleanPhone.isNotEmpty()
+
             binding.btnGuardarCita.isEnabled = isValid
         }
 
@@ -96,10 +104,14 @@ class NuevaCitaFragment : Fragment() {
         binding.actvRaza.doAfterTextChanged { watcher() }
         binding.etNombrePropietario.doAfterTextChanged { watcher() }
         binding.etTelefono.doAfterTextChanged { watcher() }
+
+        // Evaluar estado inicial
+        watcher()
     }
 
     private fun setupListeners() {
         binding.btnGuardarCita.setOnClickListener {
+            // Criterio 8: Validación estricta del síntoma al hacer clic
             val sintoma = binding.spinnerSintomas.text.toString().trim()
             if (sintoma.isEmpty() || sintoma == "Síntomas") {
                 Toast.makeText(requireContext(), "Selecciona un síntoma", Toast.LENGTH_SHORT).show()
@@ -116,37 +128,46 @@ class NuevaCitaFragment : Fragment() {
             val currentDate = dateFormat.format(Date())
             val currentTime = timeFormat.format(Date())
 
+            // Deshabilitar botón durante el proceso de guardado y consulta de red
             binding.btnGuardarCita.isEnabled = false
 
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                val dogRepo = DogRepository(RetrofitClient.dogApiService)
-                val imageResult = dogRepo.getRandomImageByBreed(raza)
-                val imageUrl = imageResult.getOrNull() ?: dogRepo.getRandomDogImage().getOrNull()
-
-                val cita = Cita(
-                    nombreMascota = mascota,
-                    raza = raza,
-                    propietario = propietario,
-                    telefono = telefono,
-                    fecha = currentDate,
-                    hora = currentTime,
-                    motivo = sintoma,
-                    imagenUrl = imageUrl,
-                    estado = "Pendiente"
-                )
-
-                withContext(Dispatchers.Main) {
-                    citaViewModel.insertCita(cita)
-                }
-            }
+            // Llamada al ViewModel para persistir con imagen dinámica de la raza (P4-05)
+            citaViewModel.insertCitaWithDynamicImage(
+                nombreMascota = mascota,
+                raza = raza,
+                nombrePropietario = propietario,
+                telefono = telefono,
+                fecha = currentDate,
+                hora = currentTime,
+                sintoma = sintoma
+            )
         }
     }
 
     private fun observeViewModel() {
         citaViewModel.operationStatus.observe(viewLifecycleOwner) { status ->
-            if (status == true) {
-                citaViewModel.resetOperationStatus()
-                findNavController().navigateUp()
+            when (status) {
+                true -> {
+                    citaViewModel.resetOperationStatus()
+                    // Volver al Home Administrador de Citas de forma limpia haciendo pop de la pila de navegación
+                    try {
+                        findNavController().popBackStack()
+                    } catch (e: Exception) {
+                        findNavController().navigateUp()
+                    }
+                }
+                false -> {
+                    citaViewModel.resetOperationStatus()
+                    Toast.makeText(requireContext(), "Error al guardar la cita. Inténtalo de nuevo.", Toast.LENGTH_SHORT).show()
+                    // Re-evaluar validación para restaurar estado del botón
+                    val mascota = binding.etNombreMascota.text.toString().trim()
+                    val raza = binding.actvRaza.text.toString().trim()
+                    val propietario = binding.etNombrePropietario.text.toString().trim()
+                    val telefono = binding.etTelefono.text.toString().trim()
+                    val cleanPhone = telefono.filter { it.isDigit() }
+                    binding.btnGuardarCita.isEnabled = mascota.isNotEmpty() && raza.isNotEmpty() && propietario.isNotEmpty() && cleanPhone.isNotEmpty()
+                }
+                null -> {}
             }
         }
     }
