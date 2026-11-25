@@ -12,8 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel encargado de la gestión de Citas.
- * Utiliza Coroutines para ejecutar operaciones de base de datos en hilos secundarios.
+ * ViewModel encargado de la gestión de Citas (P4-05).
  */
 class CitaViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -36,6 +35,27 @@ class CitaViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             val cita = repository.getCitaById(id)
             _selectedCita.postValue(cita)
+        }
+    }
+
+    fun insertCitaWithDynamicImage(
+        nombreMascota: String,
+        raza: String,
+        nombrePropietario: String,
+        telefono: String,
+        fecha: String,
+        hora: String,
+        sintoma: String
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repository.insertCitaWithDynamicImage(
+                    nombreMascota, raza, nombrePropietario, telefono, fecha, hora, sintoma
+                )
+                _operationStatus.postValue(true)
+            } catch (e: Exception) {
+                _operationStatus.postValue(false)
+            }
         }
     }
 
