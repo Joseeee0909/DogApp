@@ -46,7 +46,16 @@ class HomeFragment : Fragment() {
         }
 
         citaViewModel.allCitas.observe(viewLifecycleOwner) { citas ->
-            citaAdapter.submitList(citas)
+            val lista = citas ?: emptyList()
+            citaAdapter.submitList(lista)
+
+            if (lista.isEmpty()) {
+                binding.rvCitas.visibility = View.GONE
+                binding.tvEmptyState.visibility = View.VISIBLE
+            } else {
+                binding.rvCitas.visibility = View.VISIBLE
+                binding.tvEmptyState.visibility = View.GONE
+            }
         }
     }
 
