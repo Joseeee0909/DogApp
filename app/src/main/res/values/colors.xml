@@ -12,6 +12,7 @@
     <color name="medium_gray">#757575</color>
     <color name="light_gray">#F5F5F5</color>
     <color name="card_background">#FFFFFF</color>
+    <color name="dark_blue">#1C2833</color>
 
     <!-- Semánticos para layouts -->
     <color name="primary">@color/pink_primary</color>

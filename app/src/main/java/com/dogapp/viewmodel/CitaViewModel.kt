@@ -81,6 +81,20 @@ class CitaViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    /**
+     * P5-05: actualiza la cita en Room (mismo ID) y renueva la imagen si cambió la raza.
+     */
+    fun updateCitaWithDynamicImage(cita: Cita, razaAnterior: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repository.updateCitaWithDynamicImage(cita, razaAnterior)
+                _operationStatus.postValue(true)
+            } catch (e: Exception) {
+                _operationStatus.postValue(false)
+            }
+        }
+    }
+
     fun deleteCita(cita: Cita) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
