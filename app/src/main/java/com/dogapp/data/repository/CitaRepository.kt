@@ -77,6 +77,36 @@ class CitaRepository(
         return citaDao.updateCita(cita)
     }
 
+    /**
+     * P5-05: actualiza la cita conservando su ID. Si la raza cambió, consulta una nueva
+     * imagen de esa raza en la API Dog CEO; si la consulta falla, conserva la imagen anterior.
+     */
+    suspend fun updateCitaWithDynamicImage(cita: Cita, razaAnterior: String): Int {
+        val razaCambio = !cita.raza.trim().equals(razaAnterior.trim(), ignoreCase = true)
+        val imagenUrl = if (razaCambio) {
+            obtenerImagenDeRaza(cita.raza) ?: cita.imagenUrl
+        } else {
+            cita.imagenUrl
+        }
+        return citaDao.updateCita(cita.copy(imagenUrl = imagenUrl))
+    }
+
+    private suspend fun obtenerImagenDeRaza(raza: String): String? {
+        return try {
+            val response = dogApiService.getRandomImageByBreed(raza.trim().lowercase())
+            if (response.isSuccessful && response.body()?.status == "success") {
+                response.body()?.message
+            } else {
+                val randomResponse = dogApiService.getRandomDogImage()
+                if (randomResponse.isSuccessful && randomResponse.body()?.status == "success") {
+                    randomResponse.body()?.message
+                } else null
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     suspend fun deleteCita(cita: Cita): Int {
         return citaDao.deleteCita(cita)
     }
