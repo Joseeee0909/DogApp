@@ -8,7 +8,7 @@
     <string name="title_detalle_cita">Detalle de Cita</string>
     <string name="title_editar_cita">Editar Cita</string>
 
-    <!-- HU 4.0 Detalle de la Cita -->
+    <!-- HU 4.0 Detalle y HU 5.0 Editar Cita -->
     <string name="desc_imagen_mascota">Imagen de la mascota</string>
     <string name="desc_eliminar_cita">Eliminar cita</string>
     <string name="desc_editar_cita">Editar cita</string>
@@ -17,6 +17,8 @@
     <string name="label_turno">#%1$d</string>
     <string name="msg_cita_no_existe">La cita no existe o fue eliminada</string>
     <string name="msg_error_eliminar">No se pudo eliminar la cita. Inténtalo de nuevo.</string>
+    <string name="msg_error_editar">No se pudo editar la cita. Inténtalo de nuevo.</string>
+    <string name="btn_editar_cita">Editar Cita</string>
 
     <string-array name="lista_sintomas">
         <item>Síntomas</item>
