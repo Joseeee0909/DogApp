@@ -52,7 +52,7 @@
             <!-- Campo 2: Raza -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilRaza"
-                style="Widget.Material3.TextInputLayout.OutlinedBox"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -66,12 +66,16 @@
                 app:boxStrokeColor="@color/box_stroke_purple"
                 app:layout_constraintTop_toBottomOf="@id/tilNombreMascota">
 
-                <AutoCompleteTextView
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/actvRaza"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
                     android:inputType="text"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:maxLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -137,7 +141,7 @@
             <!-- Selector de Síntomas -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilSintomas"
-                style="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -151,12 +155,17 @@
                 app:boxStrokeColor="@color/box_stroke_purple"
                 app:layout_constraintTop_toBottomOf="@id/tilTelefono">
 
-                <AutoCompleteTextView
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/spinnerSintomas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="56dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
                     android:inputType="none"
-                    android:textColor="@color/black" />
+                    android:cursorVisible="false"
+                    android:textColor="@color/black"
+                    android:maxLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
