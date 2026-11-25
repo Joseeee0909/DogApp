@@ -57,6 +57,11 @@
         <action
             android:id="@+id/action_detalleCitaFragment_to_editarCitaFragment"
             app:destination="@id/editarCitaFragment" />
+        <action
+            android:id="@+id/action_detalleCitaFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
