@@ -1,5 +1,5 @@
 package com.dogapp.view.fragments
-
+import androidx.activity.OnBackPressedCallback
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +40,14 @@ class HomeFragment : Fragment() {
         binding.curvedToolbar.hideBackButton()
 
         setupRecyclerView()
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().moveTaskToBack(true)
+                }
+            }
+        )
 
         binding.fabAddCita.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_nuevaCitaFragment)
