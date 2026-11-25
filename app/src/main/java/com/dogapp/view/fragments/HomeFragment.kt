@@ -1,5 +1,5 @@
 package com.dogapp.view.fragments
-
+import androidx.activity.OnBackPressedCallback
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,26 +35,49 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.curvedToolbar.setTitle("Mis Citas")
+        binding.curvedToolbar.configureAsHomeHeader()
+        binding.curvedToolbar.setTitle("Administrador\n   de Citas")
         binding.curvedToolbar.hideBackButton()
 
         setupRecyclerView()
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().moveTaskToBack(true)
+                }
+            }
+        )
 
         binding.fabAddCita.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_nuevaCitaFragment)
         }
 
         citaViewModel.allCitas.observe(viewLifecycleOwner) { citas ->
-            citaAdapter.submitList(citas)
+            val lista = citas ?: emptyList()
+            citaAdapter.submitList(lista)
+
+            if (lista.isEmpty()) {
+                binding.rvCitas.visibility = View.GONE
+                binding.tvEmptyState.visibility = View.VISIBLE
+            } else {
+                binding.rvCitas.visibility = View.VISIBLE
+                binding.tvEmptyState.visibility = View.GONE
+            }
         }
     }
 
     private fun setupRecyclerView() {
         citaAdapter = CitaAdapter { cita ->
-            val bundle = Bundle().apply {
-                putInt("citaId", cita.id)
+            if (findNavController().currentDestination?.id == R.id.homeFragment) {
+                val bundle = Bundle().apply {
+                    putInt("citaId", cita.id)
+                }
+                findNavController().navigate(
+                    R.id.action_homeFragment_to_detalleCitaFragment,
+                    bundle
+                )
             }
-            findNavController().navigate(R.id.action_homeFragment_to_detalleCitaFragment, bundle)
         }
         binding.rvCitas.apply {
             layoutManager = LinearLayoutManager(requireContext())

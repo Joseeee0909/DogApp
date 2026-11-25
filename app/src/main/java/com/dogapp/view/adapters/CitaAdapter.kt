@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.dogapp.R
 import com.dogapp.data.local.entity.Cita
 import com.dogapp.databinding.ItemCitaBinding
 
@@ -37,16 +38,22 @@ class CitaAdapter(
             binding.cita = cita
             binding.root.setOnClickListener { onItemClick(cita) }
 
+            Glide.with(binding.ivDog.context).clear(binding.ivDog)
+
             if (!cita.imagenUrl.isNullOrEmpty()) {
                 Glide.with(binding.ivDog.context)
                     .load(cita.imagenUrl)
-                    .placeholder(android.R.drawable.ic_menu_gallery)
-                    .error(android.R.drawable.ic_menu_gallery)
+                    .circleCrop()
+                    .placeholder(R.drawable.perro)
+                    .error(R.drawable.perro)
                     .into(binding.ivDog)
             } else {
-                Glide.with(binding.ivDog.context).clear(binding.ivDog)
-                binding.ivDog.setImageResource(android.R.drawable.ic_menu_gallery)
+                Glide.with(binding.ivDog.context)
+                    .load(R.drawable.perro)
+                    .circleCrop()
+                    .into(binding.ivDog)
             }
+
             binding.executePendingBindings()
         }
     }
